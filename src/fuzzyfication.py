@@ -67,18 +67,19 @@ def create_query(word, predicate):
 
                     SELECT ?result
                     WHERE {
-                    <%(word)s> dcterms:subject ?result
+                        <%(word)s> dcterms:subject ?result
                     }
                  """ % {'word': word}
         return string
     if predicate == 'subClassOf':
         string = """
+                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-                    SELECT DISTINCT ?result
+                    SELECT ?result
                     WHERE {
-                      <%(word)s> a ?result ; a ?c2 .
-                      ?result rdfs:subClassOf? ?c2 .
+                      <%(word)s> rdf:type ?o.
+                      ?o rdfs:subClassOf ?result
                     }
                  """ % {'word': word}
         return string
